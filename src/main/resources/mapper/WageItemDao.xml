@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.vueparentss.dao.WageItemDao">
+
+    <resultMap id="BaseResultMap" type="com.example.vueparentss.entity.WageItem">
+        <!--@Table wage_item-->
+        <result property="wageItemId" column="wage_item_id" jdbcType="INTEGER"/>
+        <result property="lateFine" column="late_fine" jdbcType="OTHER"/>
+        <result property="earlyFine" column="early_fine" jdbcType="OTHER"/>
+        <result property="businessTripSal" column="business_trip_sal" jdbcType="OTHER"/>
+        <result property="fulChecksSal" column="ful_checks_sal" jdbcType="OTHER"/>
+        <result property="foodSal" column="food_sal" jdbcType="OTHER"/>
+        <result property="trafficSal" column="traffic_sal" jdbcType="OTHER"/>
+        <result property="usualSal" column="usual_sal" jdbcType="OTHER"/>
+        <result property="weekSal" column="week_sal" jdbcType="OTHER"/>
+        <result property="holidaySal" column="holiday_sal" jdbcType="OTHER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          wage_item_id, late_fine, early_fine, business_trip_sal, ful_checks_sal, food_sal, traffic_sal, usual_sal, week_sal, holiday_sal
+        from salmanage.wage_item
+        where wage_item_id = #{wageItemId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          wage_item_id, late_fine, early_fine, business_trip_sal, ful_checks_sal, food_sal, traffic_sal, usual_sal, week_sal, holiday_sal
+        from salmanage.wage_item
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          wage_item_id, late_fine, early_fine, business_trip_sal, ful_checks_sal, food_sal, traffic_sal, usual_sal, week_sal, holiday_sal
+        from salmanage.wage_item
+        <where>
+            <if test="wageItemId != null">
+                and wage_item_id = #{wageItemId}
+            </if>
+            <if test="lateFine != null">
+                and late_fine = #{lateFine}
+            </if>
+            <if test="earlyFine != null">
+                and early_fine = #{earlyFine}
+            </if>
+            <if test="businessTripSal != null">
+                and business_trip_sal = #{businessTripSal}
+            </if>
+            <if test="fulChecksSal != null">
+                and ful_checks_sal = #{fulChecksSal}
+            </if>
+            <if test="foodSal != null">
+                and food_sal = #{foodSal}
+            </if>
+            <if test="trafficSal != null">
+                and traffic_sal = #{trafficSal}
+            </if>
+            <if test="usualSal != null">
+                and usual_sal = #{usualSal}
+            </if>
+            <if test="weekSal != null">
+                and week_sal = #{weekSal}
+            </if>
+            <if test="holidaySal != null">
+                and holiday_sal = #{holidaySal}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="wageItemId" useGeneratedKeys="true">
+        insert into salmanage.wage_item(late_fine, early_fine, business_trip_sal, ful_checks_sal, food_sal, traffic_sal, usual_sal, week_sal, holiday_sal)
+        values (#{lateFine}, #{earlyFine}, #{businessTripSal}, #{fulChecksSal}, #{foodSal}, #{trafficSal}, #{usualSal}, #{weekSal}, #{holidaySal})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update salmanage.wage_item
+        <set>
+            <if test="lateFine != null">
+                late_fine = #{lateFine},
+            </if>
+            <if test="earlyFine != null">
+                early_fine = #{earlyFine},
+            </if>
+            <if test="businessTripSal != null">
+                business_trip_sal = #{businessTripSal},
+            </if>
+            <if test="fulChecksSal != null">
+                ful_checks_sal = #{fulChecksSal},
+            </if>
+            <if test="foodSal != null">
+                food_sal = #{foodSal},
+            </if>
+            <if test="trafficSal != null">
+                traffic_sal = #{trafficSal},
+            </if>
+            <if test="usualSal != null">
+                usual_sal = #{usualSal},
+            </if>
+            <if test="weekSal != null">
+                week_sal = #{weekSal},
+            </if>
+            <if test="holidaySal != null">
+                holiday_sal = #{holidaySal},
+            </if>
+        </set>
+        where wage_item_id = #{wageItemId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from salmanage.wage_item where wage_item_id = #{wageItemId}
+    </delete>
+
+</mapper>

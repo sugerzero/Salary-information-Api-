@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.vueparentss.dao.ChecksDao">
+
+    <resultMap id="BaseResultMap" type="com.example.vueparentss.entity.Checks">
+        <!--@Table checks-->
+        <result property="checksId" column="checks_id" jdbcType="INTEGER"/>
+        <result property="deptId" column="dept_id" jdbcType="INTEGER"/>
+        <result property="empId" column="emp_id" jdbcType="INTEGER"/>
+        <result property="mon" column="mon" jdbcType="VARCHAR"/>
+        <result property="sickLeave" column="sick_leave" jdbcType="INTEGER"/>
+        <result property="affairLeave" column="affair_leave" jdbcType="INTEGER"/>
+        <result property="usualHour" column="usual_hour" jdbcType="OTHER"/>
+        <result property="weekHour" column="week_hour" jdbcType="OTHER"/>
+        <result property="holidayHour" column="holiday_hour" jdbcType="OTHER"/>
+        <result property="late" column="late" jdbcType="INTEGER"/>
+        <result property="early" column="early" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+
+
+    <resultMap id="emp_all_map" type="com.example.vueparentss.entity.Emps">
+        <id property="empId" column="emp_id"/>
+        <result property="checksId" column="checks_id"/>
+        <result property="empName" column="emp_name"/>
+        <result property="empSex" column="emp_sex"/>
+        <result property="empEdu" column="emp_edu"/>
+        <result property="empTel" column="emp_tel"/>
+        <result property="titleId" column="title_id"/>
+        <result property="postId" column="post_id"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="empSosTel" column="emp_sos_tel"/>
+        <result property="empSosName" column="emp_sos_name"/>
+        <result property="baseMoney" column="base_money"/>
+
+        <!--这里可以使用分步查询-->
+        <!--封装职称-->
+        <association property="title" javaType="com.example.vueparentss.entity.Title">
+            <id property="titleId" column="title_id"/>
+            <result property="titleName" column="title_name"/>
+            <result property="titleSal" column="title_sal"/>
+        </association>
+        <!--封装岗位-->
+        <association property="post" javaType="com.example.vueparentss.entity.Post">
+            <id property="postId" column="post_id"/>
+            <result property="postName" column="post_name"/>
+            <result property="postDesc" column="post_desc"/>
+            <result property="postSal" column="post_sal"/>
+        </association>
+        <!--封装部门-->
+        <association property="dept" javaType="com.example.vueparentss.entity.Dept">
+            <id property="deptId" column="dept_id"/>
+            <result property="deptName" column="dept_name"/>
+        </association>
+        <association property="checks" javaType="com.example.vueparentss.entity.Checks">
+            <id property="checksId" column="checks_id"/>
+            <result property="deptId" column="dept_id" />
+            <result property="empId" column="emp_id" />
+            <result property="mon" column="mon" />
+            <result property="sickLeave" column="sick_leave"/>
+            <result property="affairLeave" column="affair_leave" />
+            <result property="usualHour" column="usual_hour"/>
+            <result property="weekHour" column="week_hour"/>
+            <result property="holidayHour" column="holiday_hour"/>
+            <result property="late" column="late" />
+            <result property="early" column="early"/>
+        </association>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          checks_id, dept_id, emp_id, mon, sick_leave, affair_leave, usual_hour, week_hour, holiday_hour, late, early
+        from salmanage.checks
+        where checks_id = #{checksId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          checks_id, dept_id, emp_id, mon, sick_leave, affair_leave, usual_hour, week_hour, holiday_hour, late, early
+        from salmanage.checks
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          checks_id, dept_id, emp_id, mon, sick_leave, affair_leave, usual_hour, week_hour, holiday_hour, late, early
+        from salmanage.checks
+        <where>
+            <if test="checksId != null">
+                and checks_id = #{checksId}
+            </if>
+            <if test="deptId != null">
+                and dept_id = #{deptId}
+            </if>
+            <if test="empId != null">
+                and emp_id = #{empId}
+            </if>
+            <if test="mon != null and mon != ''">
+                and mon = #{mon}
+            </if>
+            <if test="sickLeave != null">
+                and sick_leave = #{sickLeave}
+            </if>
+            <if test="affairLeave != null">
+                and affair_leave = #{affairLeave}
+            </if>
+            <if test="usualHour != null">
+                and usual_hour = #{usualHour}
+            </if>
+            <if test="weekHour != null">
+                and week_hour = #{weekHour}
+            </if>
+            <if test="holidayHour != null">
+                and holiday_hour = #{holidayHour}
+            </if>
+            <if test="late != null">
+                and late = #{late}
+            </if>
+            <if test="early != null">
+                and early = #{early}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="checksId" useGeneratedKeys="true">
+        insert into salmanage.checks(dept_id, emp_id, mon, sick_leave, affair_leave, usual_hour, week_hour, holiday_hour, late, early)
+        values (#{deptId}, #{empId}, #{mon}, #{sickLeave}, #{affairLeave}, #{usualHour}, #{weekHour}, #{holidayHour}, #{late}, #{early})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update salmanage.checks
+        <set>
+            <if test="deptId != null">
+                dept_id = #{deptId},
+            </if>
+            <if test="empId != null">
+                emp_id = #{empId},
+            </if>
+            <if test="mon != null and mon != ''">
+                mon = #{mon},
+            </if>
+            <if test="sickLeave != null">
+                sick_leave = #{sickLeave},
+            </if>
+            <if test="affairLeave != null">
+                affair_leave = #{affairLeave},
+            </if>
+            <if test="usualHour != null">
+                usual_hour = #{usualHour},
+            </if>
+            <if test="weekHour != null">
+                week_hour = #{weekHour},
+            </if>
+            <if test="holidayHour != null">
+                holiday_hour = #{holidayHour},
+            </if>
+            <if test="late != null">
+                late = #{late},
+            </if>
+            <if test="early != null">
+                early = #{early},
+            </if>
+        </set>
+        where checks_id = #{checksId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from salmanage.checks where checks_id = #{checksId}
+    </delete>
+    <!--查询指定行数据-->
+    <select id="checkstime" resultMap='emp_all_map'>
+   select * from checks c
+   left join emp e on e.emp_id = c.emp_id
+   left join dept d on c.dept_id =d.dept_id
+    </select>
+    <select id="checkstimes" resultMap='BaseResultMap'>
+   select * from checks
+    </select>
+</mapper>

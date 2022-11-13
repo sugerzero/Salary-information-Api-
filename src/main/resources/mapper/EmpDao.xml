@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.vueparentss.dao.EmpDao">
+
+    <resultMap id="BaseResultMap" type="com.example.vueparentss.entity.Emp">
+        <!--@Table emp-->
+        <result property="empId" column="emp_id" jdbcType="INTEGER"/>
+        <result property="empName" column="emp_name" jdbcType="VARCHAR"/>
+        <result property="empSex" column="emp_sex" jdbcType="INTEGER"/>
+        <result property="empEdu" column="emp_edu" jdbcType="VARCHAR"/>
+        <result property="empTel" column="emp_tel" jdbcType="VARCHAR"/>
+        <result property="titleId" column="title_id" jdbcType="INTEGER"/>
+        <result property="postId" column="post_id" jdbcType="INTEGER"/>
+        <result property="deptId" column="dept_id" jdbcType="INTEGER"/>
+        <result property="empSosTel" column="emp_sos_tel" jdbcType="VARCHAR"/>
+        <result property="empSosName" column="emp_sos_name" jdbcType="VARCHAR"/>
+        <result property="baseMoney" column="base_money" jdbcType="OTHER"/>
+        <result property="workId" column="work_id" jdbcType="INTEGER"/>
+        <result property="wageItemId" column="wage_item_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--条件查询-->
+    <!--<select id="selectAll" resultMap="emp_all_map">-->
+        <!--SELECT * FROM emp e-->
+        <!--LEFT JOIN dept d ON e.dept_id = d.dept_id-->
+        <!--LEFT JOIN post p ON e.post_id = p.post_id-->
+        <!--LEFT JOIN title t ON e.title_id = t.title_id-->
+
+        <!--<where>-->
+            <!--<if test=" empId != null ">-->
+                <!--e.emp_id = #{empId}-->
+            <!--</if>-->
+            <!--<if test="empName != null and empName!= '' ">-->
+                <!--and e.emp_name = #{empName}-->
+            <!--</if>-->
+            <!--<if test="deptId != null">-->
+                <!--and e.dept_id = #{deptId}-->
+            <!--</if>-->
+        <!--</where>-->
+    <!--</select>-->
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          emp_id, emp_name, emp_sex, emp_edu, emp_tel, title_id, post_id, dept_id, emp_sos_tel, emp_sos_name, base_money, work_id, wage_item_id
+        from salmanage.emp
+        where emp_id = #{empId}
+    </select>
+    <!--查询名字-->
+    <select id="queryByName" resultMap="BaseResultMap">
+        select
+          emp_id, emp_name, emp_sex, emp_edu, emp_tel, title_id, post_id, dept_id, emp_sos_tel, emp_sos_name, base_money, work_id, wage_item_id
+        from salmanage.emp
+        where emp_name = #{empName}
+    </select>
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          emp_id, emp_name, emp_sex, emp_edu, emp_tel, title_id, post_id, dept_id, emp_sos_tel, emp_sos_name, base_money, work_id, wage_item_id
+        from salmanage.emp
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          emp_id, emp_name, emp_sex, emp_edu, emp_tel, title_id, post_id, dept_id, emp_sos_tel, emp_sos_name, base_money, work_id, wage_item_id
+        from salmanage.emp
+        <where>
+            <if test="empId != null">
+                and emp_id = #{empId}
+            </if>
+            <if test="empName != null and empName != ''">
+                and emp_name = #{empName}
+            </if>
+            <if test="empSex != null">
+                and emp_sex = #{empSex}
+            </if>
+            <if test="empEdu != null and empEdu != ''">
+                and emp_edu = #{empEdu}
+            </if>
+            <if test="empTel != null and empTel != ''">
+                and emp_tel = #{empTel}
+            </if>
+            <if test="titleId != null">
+                and title_id = #{titleId}
+            </if>
+            <if test="postId != null">
+                and post_id = #{postId}
+            </if>
+            <if test="deptId != null">
+                and dept_id = #{deptId}
+            </if>
+            <if test="empSosTel != null and empSosTel != ''">
+                and emp_sos_tel = #{empSosTel}
+            </if>
+            <if test="empSosName != null and empSosName != ''">
+                and emp_sos_name = #{empSosName}
+            </if>
+            <if test="baseMoney != null">
+                and base_money = #{baseMoney}
+            </if>
+            <if test="workId != null">
+                and work_id = #{workId}
+            </if>
+            <if test="wageItemId != null">
+                and wage_item_id = #{wageItemId}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="empId" useGeneratedKeys="true">
+        insert into salmanage.emp(emp_name, emp_sex, emp_edu, emp_tel, title_id, post_id, dept_id, emp_sos_tel, emp_sos_name, base_money, work_id, wage_item_id)
+        values (#{empName}, #{empSex}, #{empEdu}, #{empTel}, #{titleId}, #{postId}, #{deptId}, #{empSosTel}, #{empSosName}, #{baseMoney}, #{workId}, #{wageItemId})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update salmanage.emp
+        <set>
+            <if test="empName != null and empName != ''">
+                emp_name = #{empName},
+            </if>
+            <if test="empSex != null">
+                emp_sex = #{empSex},
+            </if>
+            <if test="empEdu != null and empEdu != ''">
+                emp_edu = #{empEdu},
+            </if>
+            <if test="empTel != null and empTel != ''">
+                emp_tel = #{empTel},
+            </if>
+            <if test="titleId != null">
+                title_id = #{titleId},
+            </if>
+            <if test="postId != null">
+                post_id = #{postId},
+            </if>
+            <if test="deptId != null">
+                dept_id = #{deptId},
+            </if>
+            <if test="empSosTel != null and empSosTel != ''">
+                emp_sos_tel = #{empSosTel},
+            </if>
+            <if test="empSosName != null and empSosName != ''">
+                emp_sos_name = #{empSosName},
+            </if>
+            <if test="baseMoney != null">
+                base_money = #{baseMoney},
+            </if>
+            <if test="workId != null">
+                work_id = #{workId},
+            </if>
+            <if test="wageItemId != null">
+                wage_item_id = #{wageItemId},
+            </if>
+        </set>
+        where emp_id = #{empId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from salmanage.emp where emp_id = #{empId}
+    </delete>
+
+</mapper>

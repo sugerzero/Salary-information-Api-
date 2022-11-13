@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.vueparentss.dao.SalaryDao">
+
+    <resultMap id="BaseResultMap" type="com.example.vueparentss.entity.Salary">
+        <!--@Table salary-->
+        <result property="salId" column="sal_id" jdbcType="INTEGER"/>
+        <result property="mon" column="mon" jdbcType="VARCHAR"/>
+        <result property="empId" column="emp_id" jdbcType="INTEGER"/>
+        <result property="empName" column="emp_name" jdbcType="VARCHAR"/>
+        <result property="deptId" column="dept_id" jdbcType="INTEGER"/>
+        <result property="realSal" column="real_sal" jdbcType="OTHER"/>
+        <result property="shouldSal" column="should_sal" jdbcType="OTHER"/>
+        <result property="baseMoney" column="base_money" jdbcType="OTHER"/>
+        <result property="businessTripSal" column="business_trip_sal" jdbcType="OTHER"/>
+        <result property="postSal" column="post_sal" jdbcType="OTHER"/>
+        <result property="foodSal" column="food_sal" jdbcType="OTHER"/>
+        <result property="trafficSal" column="traffic_sal" jdbcType="OTHER"/>
+        <result property="overtimeSal" column="overtime_sal" jdbcType="OTHER"/>
+        <result property="titleSal" column="title_sal" jdbcType="OTHER"/>
+        <result property="workSal" column="work_sal" jdbcType="OTHER"/>
+        <result property="state" column="state" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+          sal_id, mon, emp_id, emp_name, dept_id, real_sal, should_sal, base_money, business_trip_sal, post_sal, food_sal, traffic_sal, overtime_sal, title_sal, work_sal, state
+        from salmanage.salary
+    </select>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+    select
+    sal_id, mon, emp_id, emp_name, dept_id, real_sal, should_sal, base_money, business_trip_sal, post_sal, food_sal, traffic_sal, overtime_sal, title_sal, work_sal, state
+    from salmanage.salary
+    where emp_id = #{salId}
+</select>
+
+    <!--查询单个-->
+    <select id="queryByIds" resultMap="BaseResultMap">
+    select
+    sal_id, mon, emp_id, emp_name, dept_id, real_sal, should_sal, base_money, business_trip_sal, post_sal, food_sal, traffic_sal, overtime_sal, title_sal, work_sal, state
+    from salmanage.salary
+    where emp_id = #{salId}
+</select>
+
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          sal_id, mon, emp_id, emp_name, dept_id, real_sal, should_sal, base_money, business_trip_sal, post_sal, food_sal, traffic_sal, overtime_sal, title_sal, work_sal, state
+        from salmanage.salary
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          sal_id, mon, emp_id, emp_name, dept_id, real_sal, should_sal, base_money, business_trip_sal, post_sal, food_sal, traffic_sal, overtime_sal, title_sal, work_sal, state
+        from salmanage.salary
+        <where>
+            <if test="salId != null">
+                and sal_id = #{salId}
+            </if>
+            <if test="mon != null and mon != ''">
+                and mon = #{mon}
+            </if>
+            <if test="empId != null">
+                and emp_id = #{empId}
+            </if>
+            <if test="empName != null and empName != ''">
+                and emp_name = #{empName}
+            </if>
+            <if test="deptId != null">
+                and dept_id = #{deptId}
+            </if>
+            <if test="realSal != null">
+                and real_sal = #{realSal}
+            </if>
+            <if test="shouldSal != null">
+                and should_sal = #{shouldSal}
+            </if>
+            <if test="baseMoney != null">
+                and base_money = #{baseMoney}
+            </if>
+            <if test="businessTripSal != null">
+                and business_trip_sal = #{businessTripSal}
+            </if>
+            <if test="postSal != null">
+                and post_sal = #{postSal}
+            </if>
+            <if test="foodSal != null">
+                and food_sal = #{foodSal}
+            </if>
+            <if test="trafficSal != null">
+                and traffic_sal = #{trafficSal}
+            </if>
+            <if test="overtimeSal != null">
+                and overtime_sal = #{overtimeSal}
+            </if>
+            <if test="titleSal != null">
+                and title_sal = #{titleSal}
+            </if>
+            <if test="workSal != null">
+                and work_sal = #{workSal}
+            </if>
+            <if test="state != null">
+                and state = #{state}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="salId" useGeneratedKeys="true">
+        insert into salmanage.salary(mon, emp_id, emp_name, dept_id, real_sal, should_sal, base_money, business_trip_sal, post_sal, food_sal, traffic_sal, overtime_sal, title_sal, work_sal, state)
+        values (#{mon}, #{empId}, #{empName}, #{deptId}, #{realSal}, #{shouldSal}, #{baseMoney}, #{businessTripSal}, #{postSal}, #{foodSal}, #{trafficSal}, #{overtimeSal}, #{titleSal}, #{workSal}, #{state})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update salmanage.salary
+        <set>
+            <if test="mon != null and mon != ''">
+                mon = #{mon},
+            </if>
+            <if test="empId != null">
+                emp_id = #{empId},
+            </if>
+            <if test="empName != null and empName != ''">
+                emp_name = #{empName},
+            </if>
+            <if test="deptId != null">
+                dept_id = #{deptId},
+            </if>
+            <if test="realSal != null">
+                real_sal = #{realSal},
+            </if>
+            <if test="shouldSal != null">
+                should_sal = #{shouldSal},
+            </if>
+            <if test="baseMoney != null">
+                base_money = #{baseMoney},
+            </if>
+            <if test="businessTripSal != null">
+                business_trip_sal = #{businessTripSal},
+            </if>
+            <if test="postSal != null">
+                post_sal = #{postSal},
+            </if>
+            <if test="foodSal != null">
+                food_sal = #{foodSal},
+            </if>
+            <if test="trafficSal != null">
+                traffic_sal = #{trafficSal},
+            </if>
+            <if test="overtimeSal != null">
+                overtime_sal = #{overtimeSal},
+            </if>
+            <if test="titleSal != null">
+                title_sal = #{titleSal},
+            </if>
+            <if test="workSal != null">
+                work_sal = #{workSal},
+            </if>
+            <if test="state != null">
+                state = #{state},
+            </if>
+        </set>
+        where sal_id = #{salId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from salmanage.salary where sal_id = #{salId}
+    </delete>
+
+</mapper>

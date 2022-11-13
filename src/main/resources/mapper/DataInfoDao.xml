@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.vueparentss.dao.DataInfoDao">
+
+    <resultMap id="BaseResultMap" type="com.example.vueparentss.entity.DataInfo">
+        <!--@Table data_info-->
+        <result property="deptId" column="dept_id" jdbcType="INTEGER"/>
+        <result property="mon" column="mon" jdbcType="VARCHAR"/>
+        <result property="deptName" column="dept_name" jdbcType="VARCHAR"/>
+        <result property="minSal" column="min_sal" jdbcType="OTHER"/>
+        <result property="avgSal" column="avg_sal" jdbcType="OTHER"/>
+        <result property="maxSal" column="max_sal" jdbcType="OTHER"/>
+        <result property="sumSal" column="sum_sal" jdbcType="OTHER"/>
+        <result property="allSal" column="all_sal" jdbcType="OTHER"/>
+        <result property="salRatio" column="sal_ratio" jdbcType="OTHER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          dept_id, mon, dept_name, min_sal, avg_sal, max_sal, sum_sal, all_sal, sal_ratio
+        from salmanage.data_info
+        where dept_id = #{deptId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          dept_id, mon, dept_name, min_sal, avg_sal, max_sal, sum_sal, all_sal, sal_ratio
+        from salmanage.data_info
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          dept_id, mon, dept_name, min_sal, avg_sal, max_sal, sum_sal, all_sal, sal_ratio
+        from salmanage.data_info
+        <where>
+            <if test="deptId != null">
+                and dept_id = #{deptId}
+            </if>
+            <if test="mon != null and mon != ''">
+                and mon = #{mon}
+            </if>
+            <if test="deptName != null and deptName != ''">
+                and dept_name = #{deptName}
+            </if>
+            <if test="minSal != null">
+                and min_sal = #{minSal}
+            </if>
+            <if test="avgSal != null">
+                and avg_sal = #{avgSal}
+            </if>
+            <if test="maxSal != null">
+                and max_sal = #{maxSal}
+            </if>
+            <if test="sumSal != null">
+                and sum_sal = #{sumSal}
+            </if>
+            <if test="allSal != null">
+                and all_sal = #{allSal}
+            </if>
+            <if test="salRatio != null">
+                and sal_ratio = #{salRatio}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="deptId" useGeneratedKeys="true">
+        insert into salmanage.data_info(mon, dept_name, min_sal, avg_sal, max_sal, sum_sal, all_sal, sal_ratio)
+        values (#{mon}, #{deptName}, #{minSal}, #{avgSal}, #{maxSal}, #{sumSal}, #{allSal}, #{salRatio})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update salmanage.data_info
+        <set>
+            <if test="mon != null and mon != ''">
+                mon = #{mon},
+            </if>
+            <if test="deptName != null and deptName != ''">
+                dept_name = #{deptName},
+            </if>
+            <if test="minSal != null">
+                min_sal = #{minSal},
+            </if>
+            <if test="avgSal != null">
+                avg_sal = #{avgSal},
+            </if>
+            <if test="maxSal != null">
+                max_sal = #{maxSal},
+            </if>
+            <if test="sumSal != null">
+                sum_sal = #{sumSal},
+            </if>
+            <if test="allSal != null">
+                all_sal = #{allSal},
+            </if>
+            <if test="salRatio != null">
+                sal_ratio = #{salRatio},
+            </if>
+        </set>
+        where dept_id = #{deptId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from salmanage.data_info where dept_id = #{deptId}
+    </delete>
+
+</mapper>

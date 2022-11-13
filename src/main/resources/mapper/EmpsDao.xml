@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.vueparentss.dao.EmpsDao">
+
+    <resultMap id="emp_all_map" type="com.example.vueparentss.entity.Emps">
+        <id property="empId" column="emp_id"/>
+        <result property="empName" column="emp_name"/>
+        <result property="empSex" column="emp_sex"/>
+        <result property="empEdu" column="emp_edu"/>
+        <result property="empTel" column="emp_tel"/>
+        <result property="titleId" column="title_id"/>
+        <result property="postId" column="post_id"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="empSosTel" column="emp_sos_tel"/>
+        <result property="empSosName" column="emp_sos_name"/>
+        <result property="baseMoney" column="base_money"/>
+
+        <!--这里可以使用分步查询-->
+        <!--封装职称-->
+        <association property="title" javaType="com.example.vueparentss.entity.Title">
+            <id property="titleId" column="title_id"/>
+            <result property="titleName" column="title_name"/>
+            <result property="titleSal" column="title_sal"/>
+        </association>
+        <!--封装岗位-->
+        <association property="post" javaType="com.example.vueparentss.entity.Post">
+            <id property="postId" column="post_id"/>
+            <result property="postName" column="post_name"/>
+            <result property="postDesc" column="post_desc"/>
+            <result property="postSal" column="post_sal"/>
+        </association>
+        <!--封装部门-->
+        <association property="dept" javaType="com.example.vueparentss.entity.Dept">
+            <id property="deptId" column="dept_id"/>
+            <result property="deptName" column="dept_name"/>
+        </association>
+    </resultMap>
+    <!--条件查询-->
+    <select id="selectAll" resultMap="emp_all_map">
+        SELECT * FROM emp e
+        LEFT JOIN dept d ON e.dept_id = d.dept_id
+        LEFT JOIN post p ON e.post_id = p.post_id
+        LEFT JOIN title t ON e.title_id = t.title_id
+
+
+        <!--<where>-->
+            <!--<if test=" empId != null ">-->
+                <!--e.emp_id = #{empId}-->
+            <!--</if>-->
+            <!--<if test="empName != null and empName!= '' ">-->
+                <!--and e.emp_name = #{empName}-->
+            <!--</if>-->
+            <!--<if test="deptId != null">-->
+                <!--and e.dept_id = #{deptId}-->
+            <!--</if>-->
+        <!--</where>-->
+    </select>
+    <!--条件查询-->
+    <select id="selectpost" resultMap="emp_all_map">
+        SELECT * FROM post
+        LEFT JOIN dept d ON e.dept_id = d.dept_id
+        LEFT JOIN post p ON e.post_id = p.post_id
+        LEFT JOIN title t ON e.title_id = t.title_id
+        where post_name = #{postName}
+
+
+        <!--<where>-->
+        <!--<if test=" empId != null ">-->
+        <!--e.emp_id = #{empId}-->
+        <!--</if>-->
+        <!--<if test="empName != null and empName!= '' ">-->
+        <!--and e.emp_name = #{empName}-->
+        <!--</if>-->
+        <!--<if test="deptId != null">-->
+        <!--and e.dept_id = #{deptId}-->
+        <!--</if>-->
+        <!--</where>-->
+    </select>
+    <insert id="insertOne" >
+
+        insert into emp (emp_name, emp_sex, emp_edu, emp_tel,title_id,dept_id,post_id, emp_sos_tel, emp_sos_name)  values (
+        #{name},#{sex},#{Edu},#{Tel},#{title_id},#{dept_id},#{post_id},#{peo_Tel},#{people})
+
+    </insert>
+
+</mapper>
+        <!--insert into title (title_name) value (#{titleName})-->
+        <!--insert into dept (dept_name) value  (#{deptName})-->

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.vueparentss.dao.PostDao">
+
+    <resultMap id="BaseResultMap" type="com.example.vueparentss.entity.Post">
+        <result property="postId" column="post_id" jdbcType="INTEGER"/>
+        <result property="postName" column="post_name" jdbcType="VARCHAR"/>
+        <result property="postDesc" column="post_desc" jdbcType="VARCHAR"/>
+        <result property="postSal" column="post_sal" jdbcType="OTHER"/>
+    </resultMap>
+
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        post_id, post_name, post_desc, post_sal
+        from salmanage.post
+    </select>
+
+
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          post_id, post_name, post_desc, post_sal
+        from salmanage.post
+        where post_id = #{postId}
+    </select>
+
+
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          post_id, post_name, post_desc, post_sal
+        from salmanage.post
+        limit #{offset}, #{limit}
+    </select>
+
+
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          post_id, post_name, post_desc, post_sal
+        from salmanage.post
+        <where>
+            <if test="postId != null">
+                and post_id = #{postId}
+            </if>
+            <if test="postName != null and postName != ''">
+                and post_name = #{postName}
+            </if>
+            <if test="postDesc != null and postDesc != ''">
+                and post_desc = #{postDesc}
+            </if>
+            <if test="postSal != null">
+                and post_sal = #{postSal}
+            </if>
+        </where>
+    </select>
+
+    <!--查询单个 Name-->
+    <select id="queryByName" resultMap="BaseResultMap">
+        select
+          post_id, post_name, post_desc,post_sal
+        from salmanage.post
+        where post_name = #{postName}
+    </select>
+
+    <insert id="insert"  useGeneratedKeys="true">
+        insert into salmanage.post(post_name, post_desc, post_sal)
+        values (#{postName}, #{postDesc}, #{postSal})
+    </insert>
+
+
+    <update id="update">
+        update salmanage.post
+        <set>
+            <if test="postName != null and postName != ''">
+                post_name = #{postName},
+            </if>
+            <if test="postDesc != null and postDesc != ''">
+                post_desc = #{postDesc},
+            </if>
+            <if test="postSal != null">
+                post_sal = #{postSal},
+            </if>
+        </set>
+        where post_id = #{postId}
+    </update>
+
+
+    <delete id="deleteById">
+        delete from salmanage.post where post_id = #{postId}
+    </delete>
+
+</mapper>
